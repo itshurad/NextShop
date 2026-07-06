@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { SlidersHorizontal, X, Filter } from "lucide-react";
-import { Button } from "@heroui/react";
+import { Button, Spinner } from "@heroui/react";
 
 // وارد کردن کامپوننت‌های فیلتر نسخه دسکتاپ
 import SearchBox from "./SearchBox";
@@ -90,7 +90,16 @@ export default function MobileFilter({ totalProducts }) {
                 <ExistProducts />
 
                 {/* آکاردئون‌ها */}
-                <AccordionBox />
+
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center">
+                      <Spinner />
+                    </div>
+                  }
+                >
+                  <AccordionBox />
+                </Suspense>
               </div>
 
               {/* دکمه حذف فیلترها */}

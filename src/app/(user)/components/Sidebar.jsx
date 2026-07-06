@@ -4,6 +4,8 @@ import ClearAllFilters from "./ClearAllFilters";
 import SearchBox from "./SearchBox";
 import FastFilter from "./FastFilter";
 import ExistProducts from "./ExistProducts";
+import { Suspense } from "react";
+import { Spinner } from "@heroui/react";
 
 export default async function Sidebar() {
   return (
@@ -23,13 +25,21 @@ export default async function Sidebar() {
       </div>
 
       {/* Search */}
-      <SearchBox />
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center">
+            <Spinner />
+          </div>
+        }
+      >
+        <SearchBox />
+      </Suspense>
 
       {/* Fast Filter */}
       <FastFilter />
 
       {/* ۳. پنل اصلی - هماهنگ شده با رنگ‌های بدنه، بوردر و سایه تم */}
-      <div className="border-border space-y-4 bg-surface shadow-accent/5 rounded-[24px] border p-5 shadow-2xl">
+      <div className="border-border bg-surface shadow-accent/5 space-y-4 rounded-[24px] border p-5 shadow-2xl">
         <div className="text-foreground mb-6 flex items-center gap-2">
           <Filter className="text-accent h-4 w-4" />
           <h3 className="text-sm font-black tracking-wider uppercase">
@@ -41,7 +51,15 @@ export default async function Sidebar() {
           {/* Exist Product */}
           <ExistProducts />
 
-          <AccordionBox />
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center">
+                <Spinner />
+              </div>
+            }
+          >
+            <AccordionBox />
+          </Suspense>
         </div>
 
         {/* دکمه حذف فیلترها */}
