@@ -15,13 +15,14 @@ import {
   Select,
 } from "@heroui/react";
 import { useGetCategories } from "@/hooks/useCategories";
-import { TagsInput } from "react-tag-input-component";
+// import { TagsInput } from "react-tag-input-component";
 import {
   useAddProduct,
   useGetProductById,
   useUpdateProduct,
 } from "@/hooks/useProducts";
 import { useRouter } from "next/navigation";
+import CustomTagsInput from "@/components/TagsInput";
 
 export default function ProductForm({ id }) {
   const isEditMode = Boolean(id);
@@ -493,48 +494,13 @@ export default function ProductForm({ id }) {
             </Card>
 
             {/* Tags */}
-            <Card className="border-border bg-surface shadow-foreground/5 rounded-[24px] border p-6 shadow-lg md:p-8">
-              <div className="mb-4">
-                <h2 className="flex items-center gap-2 text-lg font-black">
-                  <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="text-accent h-6 w-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 6h.008v.008H6V6Z"
-                      />
-                    </svg>
-                  </span>
-                  <span>کلمات کلیدی و برچسب‌ها</span>
-                </h2>
-                <p className="text-muted mt-1 text-xs">
-                  تگ‌ها ساختار سئو و خوشه‌بندی موتور جستجو را هدایت می‌کنند.
-                </p>
-              </div>
-
-              <div className="custom-tags-wrapper">
-                <TagsInput
-                  value={selectedTags}
-                  onChange={setSelectedTags}
-                  placeHolder="مثال: موبایل، اپل، پرچمدار (اینتر بزنید)"
-                  classNames={{
-                    input: "placeholder:text-mute text-sm font-medium",
-                    tag: "text-foreground !bg-surface-secondary rounded-full font-bold text-xs !px-2 !py-1",
-                  }}
-                />
-              </div>
+            <Card className="border-border bg-surface rounded-[24px] border p-6 shadow-lg md:p-8">
+              <h2 className="mb-2 text-lg font-black">برچسب‌ها (Tags)</h2>
+              <CustomTagsInput
+                value={selectedTags}
+                onChange={setSelectedTags}
+                placeholder="تگ را وارد کرده و Enter یا کاما (,) بزنید"
+              />
             </Card>
 
             {/* Description */}

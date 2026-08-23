@@ -5,7 +5,7 @@ import {
   removeCategory,
   updateCategory,
 } from "@/services/categoryService";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetCategories = () =>
   useQuery({

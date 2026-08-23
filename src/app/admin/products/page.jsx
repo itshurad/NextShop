@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button, Chip, Spinner, Table, toast } from "@heroui/react";
 import { useGetProducts, useRemoveProduct } from "@/hooks/useProducts";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
 const formatNumber = (num) => new Intl.NumberFormat("fa-IR").format(num);

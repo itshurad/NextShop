@@ -5,7 +5,7 @@ import { Button, Chip, Spinner, Table, toast } from "@heroui/react";
 import { useGetCategories, useRemoveCategory } from "@/hooks/useCategories";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const categoryTypes = {
   product: {

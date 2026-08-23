@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 function CartPage() {
   const queryClient = useQueryClient();

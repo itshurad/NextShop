@@ -5,7 +5,7 @@ import {
   getOneCoupon,
   updateCoupon,
 } from "@/services/couponService";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetCoupons = () =>
   useQuery({

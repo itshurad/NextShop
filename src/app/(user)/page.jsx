@@ -31,13 +31,10 @@ const categoryIcons = {
 };
 
 export default async function HomePage() {
-  const [categoriesData, latestData, popularData, mobileData] =
-    await Promise.all([
-      getCategories(),
-      getProducts("sort=latest"),
-      getProducts("sort=popular"),
-      getProducts("category=mobile"),
-    ]);
+  const categoriesData = await getCategories();
+  const popularData = await getProducts("sort=popular");
+  const mobileData = await getProducts("category=mobile");
+  const latestData = await getProducts("sort=latest");
 
   const categories =
     categoriesData?.data?.categories || categoriesData?.categories || [];

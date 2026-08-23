@@ -3,7 +3,7 @@ import { useGetUser } from "@/hooks/useAuth";
 import { useLikeProduct } from "@/hooks/useProducts";
 import { Button, Spinner, toast } from "@heroui/react";
 import React from "react";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 function LikeButton({ product, className }) {
   const queryClient = useQueryClient();

@@ -14,7 +14,7 @@ import {
   Spinner,
 } from "@heroui/react";
 import { useGetUser, useUpdateProfile } from "@/hooks/useAuth";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 export default function CompleteProfilePage() {

@@ -7,7 +7,7 @@ import {
   logout,
   updateProfile,
 } from "@/services/authService";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetOtp = () => useMutation({ mutationFn: getOtp });
 

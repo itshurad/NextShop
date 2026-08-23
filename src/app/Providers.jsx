@@ -2,7 +2,7 @@
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toast } from "@heroui/react";
 export default function Providers({ children }) {
   const [queryClient] = useState(() => new QueryClient());

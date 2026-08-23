@@ -5,7 +5,7 @@ import { Button, Chip, Spinner, Table, toast } from "@heroui/react";
 import Link from "next/link";
 import { useGetCoupons, useRemoveCoupon } from "@/hooks/useCoupons";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formatNumber = (num) => new Intl.NumberFormat("fa-IR").format(num);
 function page() {

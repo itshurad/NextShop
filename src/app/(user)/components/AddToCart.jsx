@@ -4,7 +4,7 @@ import { useAddToCart } from "@/hooks/useCart";
 import { Button, toast } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 function AddToCart({ products }) {
   const queryClient = useQueryClient();
