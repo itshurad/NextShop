@@ -46,7 +46,7 @@ function OtpPage({ phoneNumber, setPhoneNumber, handleGetOtp, isLoading }) {
           <Input
             type="tel"
             dir="ltr"
-            isRequired
+            isrequired
             autoComplete="off"
             placeholder="۰۹۱۲۰۰۰۰۰۰۰"
             value={phoneNumber}

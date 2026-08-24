@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import CategoryForm from "../../_/CategoryForm";
 import { useParams } from "next/navigation";
+import CategoryForm from "../_/CategoryForm";
 
 export default function EditCategoryPage() {
   const { id } = useParams();
