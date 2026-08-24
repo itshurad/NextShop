@@ -10,7 +10,11 @@ function ClearAllFilters() {
     router.push("/products");
   };
   return (
-    <Button onClick={handleClear} variant="danger-soft" className="w-full rounded-2xl py-6">
+    <Button
+      onClick={handleClear}
+      variant="danger-soft"
+      className="w-full rounded-2xl py-6"
+    >
       <RotateCcw className="h-3.5 w-3.5" />
       حذف تمام فیلترها
     </Button>

@@ -252,7 +252,7 @@ export default function ProductForm({ id }) {
                   </p>
                 </div>
               ) : (
-                <div className="group border-border bg-surface relative mx-auto flex aspect-[16/10] w-full max-w-xl items-center justify-center overflow-hidden rounded-[24px] border p-6 shadow-inner">
+                <div className="group border-border bg-surface relative mx-auto flex aspect-16/10 w-full max-w-xl items-center justify-center overflow-hidden rounded-[24px] border p-6 shadow-inner">
                   <img
                     src={imagePreview}
                     alt="Preview"

@@ -3,7 +3,6 @@ import { Suspense, useState } from "react";
 import { SlidersHorizontal, X, Filter } from "lucide-react";
 import { Button, Spinner } from "@heroui/react";
 
-// وارد کردن کامپوننت‌های فیلتر نسخه دسکتاپ
 import SearchBox from "./SearchBox";
 import FastFilter from "./FastFilter";
 import ExistProducts from "./ExistProducts";
@@ -15,21 +14,19 @@ export default function MobileFilter({ totalProducts }) {
 
   return (
     <>
-      {/* 📱 دکمه چسبان فیلتر مخصوص موبایل (هماهنگ شده با bg-surface صلب تم) */}
       <div className="border-border bg-surface sticky top-20 z-30 mb-6 flex w-full items-center justify-between rounded-2xl border p-3 shadow-md lg:hidden">
         <span className="text-foreground/80 text-xs font-black">
           تعداد کالاها: {totalProducts} عدد
         </span>
         <button
           onClick={() => setIsOpenFilter(true)}
-          className="bg-accent/10 text-accent border-accent/20 flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-black shadow-sm transition-transform active:scale-95"
+          className="border-accent/20 bg-accent/10 text-accent flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-black shadow-sm transition-transform active:scale-95"
         >
           <SlidersHorizontal className="h-4 w-4" />
-          <span>فیلتر و جستجوی پیشرفته</span>
+          <span>فیلتر و جستجو</span>
         </button>
       </div>
 
-      {/* 📱 منوی فیلتر کشویی اختصاصی موبایل (Bottom Sheet Drawer) */}
       <div
         className={`fixed inset-0 z-50 overflow-hidden transition-all duration-300 lg:hidden ${
           isOpenFilter
@@ -37,22 +34,18 @@ export default function MobileFilter({ totalProducts }) {
             : "pointer-events-none opacity-0"
         }`}
       >
-        {/* لایه تیره پس‌زمینه پشت کشو */}
         <div
           onClick={() => setIsOpenFilter(false)}
           className="absolute inset-0 bg-black/60 backdrop-blur-[2px] transition-opacity"
         />
 
-        {/* کشوی متحرک: کاملاً متصل به bg-surface صلب تم بدون ترنسپرنتی */}
         <div
           className={`bg-surface absolute inset-x-0 bottom-0 flex h-[75vh] max-h-[85vh] flex-col rounded-t-[32px] p-4 shadow-2xl transition-transform duration-300 ease-out ${
             isOpenFilter ? "translate-y-0" : "translate-y-full"
           }`}
         >
-          {/* دستگیره بالای کشو */}
           <div className="bg-border mx-auto mb-3 h-1.5 w-12 rounded-full" />
 
-          {/* سربرگ کشو با رنگ تم ثابت و خط جداکننده مشخص */}
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-foreground text-lg font-black">فیلترها</h2>
@@ -68,15 +61,10 @@ export default function MobileFilter({ totalProducts }) {
             </button>
           </div>
 
-          {/* ⚡ بدنه محتوای فیلترها (کاملاً منطبق با رنگ پس‌زمینه پویا) */}
           <div className="mt-4 flex-1 space-y-5 overflow-y-auto px-1 pt-2 pb-20">
-            {/* ۱. باکس جستجو */}
             <SearchBox />
-
-            {/* ۲. فیلتر سریع */}
             <FastFilter />
 
-            {/* ۳. پنل اصلی فیلترها */}
             <div className="border-border bg-surface-secondary/30 rounded-[24px] border p-5 shadow-sm">
               <div className="text-foreground mb-6 flex items-center gap-2">
                 <Filter className="text-accent h-4 w-4" />
@@ -86,14 +74,10 @@ export default function MobileFilter({ totalProducts }) {
               </div>
 
               <div className="space-y-2">
-                {/* محصولات موجود */}
                 <ExistProducts />
-
-                {/* آکاردئون‌ها */}
-
                 <Suspense
                   fallback={
-                    <div className="flex items-center justify-center">
+                    <div className="flex justify-center">
                       <Spinner />
                     </div>
                   }
@@ -102,14 +86,12 @@ export default function MobileFilter({ totalProducts }) {
                 </Suspense>
               </div>
 
-              {/* دکمه حذف فیلترها */}
               <div className="mt-4">
                 <ClearAllFilters />
               </div>
             </div>
           </div>
 
-          {/* دکمه اکشن نهایی در پایین با بک‌گراند صلب برای پوشاندن محتوای اسکرول زیرین */}
           <div className="border-border bg-surface absolute inset-x-0 bottom-0 border-t p-4">
             <Button
               onClick={() => setIsOpenFilter(false)}

@@ -7,10 +7,9 @@ import ExistProducts from "./ExistProducts";
 import { Suspense } from "react";
 import { Spinner } from "@heroui/react";
 
-export default async function Sidebar() {
+export default function Sidebar() {
   return (
-    <aside className="sticky top-26 w-[350px] space-y-6 xl:block">
-      {/* هدر جذاب سایدبار - هماهنگ شده با متون تم */}
+    <aside className="sticky top-26 w-87.5 space-y-6 xl:block">
       <div className="flex items-center justify-between px-2">
         <div>
           <h2 className="text-foreground text-xl font-black">فیلترها</h2>
@@ -18,13 +17,11 @@ export default async function Sidebar() {
             جستجوی دقیق‌تر
           </p>
         </div>
-        {/* تغییر پس‌زمینه و رنگ آیکون به رنگ Accent تم */}
         <div className="bg-accent/10 text-accent rounded-2xl p-2">
           <SlidersHorizontal className="h-5 w-5" />
         </div>
       </div>
 
-      {/* Search */}
       <Suspense
         fallback={
           <div className="flex items-center justify-center">
@@ -35,10 +32,8 @@ export default async function Sidebar() {
         <SearchBox />
       </Suspense>
 
-      {/* Fast Filter */}
       <FastFilter />
 
-      {/* ۳. پنل اصلی - هماهنگ شده با رنگ‌های بدنه، بوردر و سایه تم */}
       <div className="border-border bg-surface shadow-accent/5 space-y-4 rounded-[24px] border p-5 shadow-2xl">
         <div className="text-foreground mb-6 flex items-center gap-2">
           <Filter className="text-accent h-4 w-4" />
@@ -48,7 +43,6 @@ export default async function Sidebar() {
         </div>
 
         <div className="space-y-4">
-          {/* Exist Product */}
           <ExistProducts />
 
           <Suspense
@@ -62,7 +56,6 @@ export default async function Sidebar() {
           </Suspense>
         </div>
 
-        {/* دکمه حذف فیلترها */}
         <ClearAllFilters />
       </div>
     </aside>

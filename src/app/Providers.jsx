@@ -1,11 +1,23 @@
 "use client";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Toast } from "@heroui/react";
+
 export default function Providers({ children }) {
-  const [queryClient] = useState(() => new QueryClient());
+
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+            refetchOnWindowFocus: true,
+          },
+        },
+      }),
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -15,7 +27,11 @@ export default function Providers({ children }) {
         enableSystem
         disableTransitionOnChange
       >
-        <Toast.Provider dir="rtl" className="text-right" placement="top" />
+        <Toast.Provider
+          dir="rtl"
+          className="text-right font-sans"
+          placement="top"
+        />
         {children}
       </NextThemesProvider>
     </QueryClientProvider>

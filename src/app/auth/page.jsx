@@ -8,18 +8,19 @@ import { useRouter } from "next/navigation";
 
 const RESEND_TIME = 60;
 
-function Page() {
+export default function AuthPage() {
   const [step, setStep] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [time, setTime] = useState(RESEND_TIME);
   const [otp, setOtp] = useState("");
 
-  const { mutateAsync: checkOtp } = useCheckOtp();
-  const { mutateAsync: getOtp } = useGetOtp();
+  // استخراج isPending برای جلوگیری از کلیک‌های تکراری و نمایش لودینگ
+  const { mutateAsync: checkOtp, isPending: isChecking } = useCheckOtp();
+  const { mutateAsync: getOtp, isPending: isGetting } = useGetOtp();
   const router = useRouter();
 
-  const handelGetOtp = async (e) => {
-    e.preventDefault();
+  const handleGetOtp = async (e) => {
+    if (e) e.preventDefault();
     try {
       const { message } = await getOtp({ phoneNumber });
       toast.success(message || "کد امنیتی صادر شد.");
@@ -33,7 +34,7 @@ function Page() {
     }
   };
 
-  const handelCheckOtp = async (e) => {
+  const handleCheckOtp = async (e) => {
     e.preventDefault();
     try {
       const { message } = await checkOtp({ phoneNumber, otp });
@@ -44,40 +45,41 @@ function Page() {
     }
   };
 
+  // تایمر بهینه و استاندارد جلوگیری از Memory Leak
   useEffect(() => {
-    const timer = time > 0 && setInterval(() => setTime((t) => t - 1), 1000);
-    return () => {
-      if (timer) clearInterval(timer);
-    };
+    if (time <= 0) return;
+    const timer = setInterval(() => setTime((t) => t - 1), 1000);
+    return () => clearInterval(timer);
   }, [time]);
 
   return (
-    <div className="relative flex h-screen w-screen items-center justify-center overflow-hidden p-4 [color:var(--foreground)] antialiased transition-colors duration-500 select-none [background:var(--background)]">
-      {/* هاله‌های نوری شناور که بر اساس رنگ اکسنت تم تو هندل می‌شوند */}
-      <div className="pointer-events-none absolute top-1/4 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 rounded-full opacity-[0.04] blur-[140px] [background:var(--accent)]" />
+    <div className="bg-background text-foreground relative flex min-h-screen w-full items-center justify-center overflow-hidden p-4 antialiased transition-colors duration-500 select-none">
+      {/* هاله نوری پس‌زمینه */}
+      <div className="bg-accent pointer-events-none absolute top-1/4 left-1/2 -z-10 h-125 w-125 -translate-x-1/2 rounded-full opacity-[0.05] blur-[140px]" />
 
-      <div className="z-10 w-full max-w-[420px]">
+      <div className="z-10 w-full max-w-105">
         {step === 0 ? (
           <OtpPage
             phoneNumber={phoneNumber}
             setPhoneNumber={setPhoneNumber}
             setStep={setStep}
-            handelGetOtp={handelGetOtp}
+            handleGetOtp={handleGetOtp}
+            isLoading={isGetting}
           />
         ) : (
           <CheckOtpPage
             phoneNumber={phoneNumber}
             setStep={setStep}
-            handelCheckOtp={handelCheckOtp}
+            handleCheckOtp={handleCheckOtp}
             setOtp={setOtp}
             otp={otp}
             time={time}
-            onResendOtp={handelGetOtp}
+            onResendOtp={handleGetOtp}
+            isLoadingCheck={isChecking}
+            isLoadingResend={isGetting}
           />
         )}
       </div>
     </div>
   );
 }
-
-export default Page;

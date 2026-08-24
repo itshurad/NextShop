@@ -3,7 +3,7 @@
 import { useGetUser } from "@/hooks/useAuth";
 import { useAddToCart, useDecrementFromCart } from "@/hooks/useCart";
 import { useCreatPayment } from "@/hooks/usePayments";
-import { Spinner, toast } from "@heroui/react";
+import { Button, Spinner, toast, Input } from "@heroui/react";
 import {
   Trash2,
   Plus,
@@ -13,197 +13,306 @@ import {
   ShieldCheck,
   Truck,
   Percent,
+  ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
-function CartPage() {
+export default function CartPage() {
   const queryClient = useQueryClient();
   const { data, isLoading } = useGetUser();
   const { cart } = data || {};
   const products = cart?.productDetail || [];
   const payDetail = cart?.payDetail;
 
-  const { isLoading: addingToCart, mutateAsync: addToCartFn } = useAddToCart();
-  const { isLoading: decrementingFromCart, mutateAsync: decrementFromCartFn } =
+  const [couponCode, setCouponCode] = useState("");
+
+  const { isPending: isAdding, mutateAsync: addToCartFn } = useAddToCart();
+  const { isPending: isDecrementing, mutateAsync: decrementFromCartFn } =
     useDecrementFromCart();
-  const { mutateAsync: paymentsFn, isLoading: paymenting } = useCreatPayment();
-  console.log(products);
+  const { isPending: isPaying, mutateAsync: paymentsFn } = useCreatPayment();
 
-  if (isLoading)
-    return (
-      <div className="py-20 text-center font-black">
-        در حال بارگذاری سبد خرید...
-      </div>
-    );
-  if (!products.length)
-    return (
-      <div className="py-20 text-center font-black text-slate-400">
-        سبد خرید شما خالی است!
-      </div>
-    );
-
-  const handelDecrementProducts = async (productId) => {
+  const handleDecrementProduct = async (productId) => {
     try {
       const { message } = await decrementFromCartFn(productId);
-      toast.success(message);
+      toast.success(message || "محصول از سبد خرید کم شد");
       queryClient.invalidateQueries({ queryKey: ["get-user"] });
     } catch (error) {
-      toast.danger(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "خطایی رخ داده است");
     }
   };
-  const handelAddProducts = async (productId) => {
+
+  const handleAddProduct = async (productId) => {
     try {
       const { message } = await addToCartFn(productId);
-      toast.success(message);
+      toast.success(message || "محصول به سبد خرید اضافه شد");
       queryClient.invalidateQueries({ queryKey: ["get-user"] });
     } catch (error) {
-      toast.danger(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "خطایی رخ داده است");
     }
   };
 
-  const handlePament = async () => {
+  const handlePayment = async () => {
     try {
       const { message } = await paymentsFn();
-      toast.success(message);
+      toast.success(message || "در حال انتقال به درگاه پرداخت...");
       queryClient.invalidateQueries({ queryKey: ["get-user"] });
     } catch (error) {
-      toast.danger(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "خطایی در پرداخت رخ داد");
     }
   };
 
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    if (!couponCode.trim()) return;
+    toast.info("بخش اعمال کد تخفیف به زودی فعال می‌شود");
+    setCouponCode("");
+  };
+
+  // حالت لودینگ اولیه
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+        <Spinner size="lg" color="primary" />
+        <p className="text-muted text-sm font-black">
+          در حال بارگذاری سبد خرید...
+        </p>
+      </div>
+    );
+  }
+
+  // حالت سبد خرید خالی
+  if (!products.length) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 px-4 text-center">
+        <div className="bg-surface-secondary flex h-32 w-32 items-center justify-center rounded-full shadow-inner">
+          <ShoppingBag className="text-muted/50 h-12 w-12" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-foreground text-2xl font-black">
+            سبد خرید شما خالی است!
+          </h2>
+          <p className="text-muted text-sm font-bold">
+            هنوز هیچ محصولی به سبد خرید خود اضافه نکرده‌اید.
+          </p>
+        </div>
+        <Link href="/products">
+          <Button
+            size="lg"
+            className="bg-accent shadow-accent/20 mt-4 rounded-2xl px-8 font-black text-white shadow-lg transition-transform active:scale-95"
+          >
+            مشاهده محصولات فروشگاه
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
-    <main className="container mx-auto px-4 py-12 lg:px-8">
-      {/* Header */}
-      <div className="relative mb-12 overflow-hidden rounded-[32px] bg-white p-8 shadow-sm">
-        <div className="absolute inset-0 bg-gradient-to-l from-blue-50/80 via-transparent to-transparent" />
+    <main className="mx-auto max-w-7xl px-4 py-8 md:py-12 lg:px-8">
+      {/* هدر سبد خرید منطبق با تم داینامیک */}
+      <div className="border-border bg-surface relative mb-8 overflow-hidden rounded-[32px] border p-8 shadow-sm md:mb-12">
+        <div className="from-accent/10 absolute inset-0 bg-linear-to-l via-transparent to-transparent opacity-50" />
+        <div className="bg-accent/10 absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl" />
+
         <div className="relative flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-blue-600 text-white shadow-xl shadow-blue-600/20">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center">
+            <div className="bg-accent text-accent-foreground shadow-accent/20 flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl shadow-xl">
               <ShoppingBag className="h-9 w-9" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tighter text-slate-900">
+              <h1 className="text-foreground text-3xl font-black tracking-tighter md:text-4xl">
                 سبد خرید شما
               </h1>
-              <p className="mt-1 text-sm font-bold text-slate-400">
-                شما {products.length} محصول در سبد دارید
+              <p className="text-muted mt-2 text-sm font-bold">
+                شما{" "}
+                <span className="text-accent">
+                  {products.length.toLocaleString("fa-IR")}
+                </span>{" "}
+                محصول در سبد دارید
               </p>
             </div>
           </div>
+
           {/* نمادهای اعتماد */}
-          <div className="hidden gap-6 text-xs font-black tracking-widest text-slate-500 uppercase lg:flex">
+          <div className="text-muted hidden shrink-0 flex-col gap-4 text-xs font-black tracking-widest uppercase lg:flex">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="text-emerald-500" /> ضمانت بازگشت
+              <ShieldCheck className="text-success h-4 w-4" /> ضمانت بازگشت
             </div>
             <div className="flex items-center gap-2">
-              <Truck className="text-blue-500" /> ارسال اکسپرس
+              <Truck className="text-accent h-4 w-4" /> ارسال اکسپرس
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 items-start gap-8 xl:grid-cols-3">
-        {/* Products Side */}
-        <div className="divide-accent-soft divide-y rounded-[24px] border border-slate-100 bg-white px-5 xl:col-span-2">
-          {products.map((item) => (
-            <div
-              key={item._id}
-              className="group relative flex items-center gap-6 py-5"
+      <div className="grid grid-cols-1 items-start gap-8 lg:gap-10 xl:grid-cols-12">
+        {/* لیست محصولات (ستون راست) */}
+        <div className="flex flex-col gap-4 xl:col-span-8">
+          <div className="flex items-center justify-between px-2">
+            <h2 className="text-foreground text-lg font-black">
+              آیتم‌های سفارش
+            </h2>
+            <Link
+              href="/products"
+              className="group text-muted hover:text-accent flex items-center gap-1 text-xs font-black transition-colors"
             >
-              <div className="h-24 w-24 shrink-0 rounded-2xl bg-slate-50 p-2">
-                <Image
-                  src="/iphone.webp"
-                  alt={item.title}
-                  width={200}
-                  height={200}
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <div className="flex-1 space-y-1">
-                <h3 className="text-lg font-black text-slate-800">
-                  {item.title}
-                </h3>
-                <div className="flex items-center gap-2 font-bold text-slate-400">
-                  <span className="text-sm">
-                    {item.offPrice.toLocaleString()} تومان
-                  </span>
-                  <span className="rounded-lg bg-rose-50 px-2 py-0.5 text-[10px] text-rose-500">
-                    {Number(Math.floor((item.discount / item.price) * 100))}٪
-                    تخفیف
-                  </span>
+              ادامه خرید
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          <div className="divide-border/50 border-border bg-surface divide-y rounded-[28px] border px-4 shadow-sm md:px-6">
+            {products.map((item) => (
+              <div
+                key={item._id}
+                className="group relative flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:gap-6 md:py-6"
+              >
+                {/* تصویر محصول (داینامیک شده) */}
+                <div className="bg-surface-secondary relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl p-2 transition-transform group-hover:scale-105">
+                  <Image
+                    src={item.imageLink}
+                    alt={item.title}
+                    fill
+                    sizes="96px"
+                    unoptimized
+                    className="object-contain p-1 mix-blend-multiply dark:mix-blend-normal"
+                  />
                 </div>
-              </div>
-              <div className="flex items-center justify-center gap-3 rounded-2xl border border-slate-100 p-1.5 shadow-inner">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => handelDecrementProducts(item._id)}
-                    className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  {addingToCart || decrementingFromCart ? (
-                    <div className="flex items-center justify-center">
-                      <Spinner />
-                    </div>
-                  ) : (
-                    <span className="w-8 text-center text-sm font-black">
-                      {item.quantity}
+
+                <div className="flex flex-1 flex-col space-y-2">
+                  <h3 className="text-foreground line-clamp-2 text-base font-black md:text-lg">
+                    {item.title}
+                  </h3>
+
+                  <div className="text-muted flex flex-wrap items-center gap-2 font-bold">
+                    <span className="text-foreground text-sm">
+                      {Number(item.offPrice || item.price).toLocaleString(
+                        "fa-IR",
+                      )}{" "}
+                      تومان
                     </span>
-                  )}
+
+                    {item.discount > 0 && (
+                      <span className="bg-danger/10 text-danger rounded-lg px-2 py-0.5 text-[10px] font-black">
+                        {Math.round(
+                          (item.discount / item.price) * 100,
+                        ).toLocaleString("fa-IR")}
+                        ٪ تخفیف
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* کنترل‌کننده‌های تعداد */}
+                <div className="border-border bg-surface-secondary flex shrink-0 items-center justify-center gap-3 rounded-2xl border p-1.5 shadow-inner sm:w-auto">
                   <button
-                    onClick={() => handelAddProducts(item._id)}
-                    className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100"
+                    onClick={() => handleDecrementProduct(item._id)}
+                    disabled={isAdding || isDecrementing}
+                    className="bg-surface text-muted hover:bg-border/60 hover:text-foreground flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90 disabled:opacity-50"
+                  >
+                    {item.quantity === 1 ? (
+                      <Trash2 className="text-danger h-4 w-4" />
+                    ) : (
+                      <Minus className="h-4 w-4" />
+                    )}
+                  </button>
+
+                  <span className="text-foreground w-6 text-center text-sm font-black">
+                    {item.quantity.toLocaleString("fa-IR")}
+                  </span>
+
+                  <button
+                    onClick={() => handleAddProduct(item._id)}
+                    disabled={
+                      isAdding ||
+                      isDecrementing ||
+                      item.quantity >= item.countInStock
+                    }
+                    className="bg-surface text-muted hover:bg-border/60 hover:text-foreground flex h-8 w-8 items-center justify-center rounded-xl transition-all active:scale-90 disabled:opacity-50"
                   >
                     <Plus className="h-4 w-4" />
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Factor */}
-        <div className="xl:col-span-1">
-          <div className="sticky top-24 rounded-[32px] bg-slate-900 p-8 text-white shadow-2xl">
-            <h2 className="mb-6 text-xl font-black">خلاصه فاکتور</h2>
+        {/* فاکتور و پرداخت (ستون چپ) */}
+        <div className="xl:col-span-4">
+          <div className="border-border bg-surface-secondary shadow-accent/5 sticky top-28 rounded-[32px] border p-6 shadow-2xl md:p-8">
+            <h2 className="text-foreground mb-6 flex items-center gap-2 text-xl font-black">
+              <ShoppingBag className="text-accent h-5 w-5" /> خلاصه فاکتور
+            </h2>
+
             <div className="space-y-4 text-sm font-bold">
-              <div className="flex justify-between text-slate-400">
-                <span>قیمت کل</span>
-                <span>{payDetail.totalGrossPrice.toLocaleString("fa-IR")}</span>
+              <div className="text-muted flex justify-between">
+                <span>قیمت کل محصولات</span>
+                <span className="text-foreground">
+                  {payDetail.totalGrossPrice.toLocaleString("fa-IR")} تومان
+                </span>
               </div>
-              <div className="flex justify-between text-emerald-400">
-                <span>سود شما</span>
-                <span>{payDetail.totalOffAmount.toLocaleString("fa-IR")}</span>
+
+              <div className="text-danger flex justify-between">
+                <span>سود شما از خرید</span>
+                <span>
+                  {payDetail.totalOffAmount.toLocaleString("fa-IR")} تومان
+                </span>
               </div>
-              <div className="flex justify-between border-t border-slate-700 pt-4 text-lg font-black">
-                <span>قابل پرداخت</span>
-                <span>{payDetail.totalPrice.toLocaleString("fa-IR")}</span>
+
+              <div className="border-border flex justify-between border-t pt-4 text-lg font-black">
+                <span className="text-foreground">قابل پرداخت</span>
+                <span className="text-accent">
+                  {payDetail.totalPrice.toLocaleString("fa-IR")} تومان
+                </span>
               </div>
             </div>
-            {/* بخش کد تخفیف (اضافه شده) */}
-            <div className="mt-4 flex items-center gap-4 rounded-[24px] bg-slate-800 p-4">
-              <Tag className="text-slate-400" />
-              <input
-                placeholder="کد تخفیف دارید؟ وارد کنید..."
-                className="flex-1 bg-transparent text-sm font-bold outline-none placeholder:text-slate-400"
-              />
-              <button className="rounded-xl bg-blue-600 px-6 py-2 text-xs font-black transition-all duration-300 ease-in-out hover:bg-blue-900">
-                اعمال
-              </button>
-            </div>
-            <button
-              onClick={handlePament}
-              className="mt-8 w-full rounded-2xl bg-blue-600 py-4 font-black transition-all hover:bg-blue-500 active:scale-95"
+
+            {/* بخش کد تخفیف با کامپوننت HeroUI */}
+            <form
+              onSubmit={handleApplyCoupon}
+              className="border-border bg-surface mt-6 flex items-center gap-2 rounded-[24px] border p-2 shadow-inner"
             >
-              {paymenting ? <Spinner /> : "تکمیل سفارش و پرداخت"}
-            </button>
-            {/* نوار پیشنهادی (اضافه شده) */}
-            <div className="mt-6 flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-800 p-4">
-              <Percent className="h-8 w-8 text-blue-400" />
-              <p className="text-[10px] leading-relaxed font-bold text-slate-400">
-                با خرید بیش از ۲۰ میلیون تومان، ارسال برای شما رایگان خواهد بود!
+              <div className="text-muted pr-3 pl-2">
+                <Tag className="h-4 w-4" />
+              </div>
+              <Input
+                type="text"
+                placeholder="کد تخفیف دارید؟"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                classnames={{
+                  inputWrapper:
+                    "bg-transparent border-none shadow-none h-10 px-0",
+                  input: "text-xs font-bold",
+                }}
+              />
+              <Button
+                type="submit"
+                className="bg-accent min-w-0 shrink-0 rounded-xl px-4 py-2 text-xs font-black text-white"
+              >
+                اعمال
+              </Button>
+            </form>
+
+            <Button
+              size="lg"
+              onClick={handlePayment}
+              isLoading={isPaying}
+              className="bg-accent shadow-accent/20 mt-8 h-14 w-full rounded-2xl text-sm font-black text-white shadow-xl transition-all hover:-translate-y-0.5"
+            >
+              تکمیل سفارش و پرداخت
+            </Button>
+
+            {/* نوار پیشنهادی با رنگ‌بندی داینامیک */}
+            <div className="border-success/20 bg-success/10 mt-6 flex items-center gap-3 rounded-2xl border p-4">
+              <Percent className="text-success h-8 w-8 shrink-0" />
+              <p className="text-success/80 text-[10px] leading-relaxed font-bold">
+                با خرید بیش از ۲۰ میلیون تومان، ارسال برای شما{" "}
+                <span className="font-black">رایگان</span> خواهد بود!
               </p>
             </div>
           </div>
@@ -212,28 +321,3 @@ function CartPage() {
     </main>
   );
 }
-
-export default CartPage;
-
-// {cart:{
-// coupon:null
-// payDetail:{totalOffAmount: 250000000, totalPrice: 5250000000, totalGrossPrice: 5500000000, orderItems: Array(3), productIds: Array(3), …}
-// productDetail: [{…}, {…}, {…}]
-// _id:"6a27e11e59551e299f440dd2"}
-// [[Prototype]] : Object
-// payments: []
-// user:{
-// Products: []
-// avatarUrl :null
-// biography: null
-// cart :{products: Array(3), coupon: null, _id: '6a2a425e5c0afeb494f1e8ee'}
-// createdAt : "2026-06-09T09:47:10.530Z"
-// email: "hurad@gmail.com"
-// isActive: true
-// isVerifiedPhoneNumber: true
-// likedProducts :[]
-// name: "هوراد"
-// phoneNumber:"09150501580"
-// resetLink:null
-// role:"ADMIN"
-// updatedAt:"2026-06-11T04:39:43.628Z"}}

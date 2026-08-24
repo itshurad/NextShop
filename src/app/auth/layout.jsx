@@ -1,7 +1,5 @@
 import React from "react";
 
-function layout({ children }) {
-  return <div>{children}</div>;
+export default function AuthLayout({ children }) {
+  return <div className="bg-background min-h-screen">{children}</div>;
 }
-
-export default layout;

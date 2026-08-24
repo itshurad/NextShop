@@ -30,7 +30,7 @@ export default function AccountProgress({
               cx="48"
               cy="48"
               r={radius}
-              className="stroke-accent fill-none stroke-[4] transition-all duration-500 ease-in-out"
+              className="stroke-accent fill-none stroke-4 transition-all duration-500 ease-in-out"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
@@ -48,7 +48,7 @@ export default function AccountProgress({
               : "حساب کاربری شما تقریباً کامل است!"}
           </h3>
 
-          <p className="text-muted mt-2 max-w-[260px] text-center text-xs leading-relaxed font-bold">
+          <p className="text-muted mt-2 max-w-65 text-center text-xs leading-relaxed font-bold">
             {percentage === 100
               ? "از امکانات کامل پلتفرم لذت ببرید."
               : `شما ${completedSteps} بخش از ${totalSteps} بخش را کامل کرده‌اید. با تکمیل اطلاعات، اولین نشان خود را بگیرید.`}

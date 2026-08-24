@@ -1,9 +1,8 @@
 import http from "./httpService";
 
 export function createPayment() {
-  return http.post("/payment/create").then(({ data }) => data.data);
+  return http.post("/payment/create");
 }
-
 export function getAllPayments() {
-  return http.get("/admin/payment/list").then(({ data }) => data.data);
+  return http.get("/admin/payment/list");
 }

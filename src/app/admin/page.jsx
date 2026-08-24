@@ -9,36 +9,35 @@ import Link from "next/link";
 import AccountProgress from "@/components/AccountProgress";
 
 export default function DashboardPage() {
-  const { data: userDate, isLoading: gettingUser } = useGetUser();
-  const { user } = userDate || {};
-  let userInfoCount = 0;
-  const userInfo = {
-    name: user?.name,
-    email: user?.email,
-    phoneNumber: user?.phoneNumber,
-    biography: user?.biography,
-  };
-  Object.keys(userInfo).map((key) => {
-    if (userInfo[key] !== "") {
-      userInfoCount++;
-    }
-  });
+  const { data: userData, isLoading: gettingUser } = useGetUser();
+  const { user } = userData || {};
+
+  // بهینه‌سازی بسیار تمیز (Clean Code) برای شمارش فیلدهای پرشده کاربر بدون نیاز به حلقه‌های اضافی
+  const completedSteps = [
+    user?.name,
+    user?.email,
+    user?.phoneNumber,
+    user?.biography,
+  ].filter((val) => val && val.trim() !== "").length;
 
   const { data: paymentsData, isLoading: gettingPayments } = useGetPayments();
   const { payments } = paymentsData || {};
+
   const { data: usersData, isLoading: gettingUsers } = useGetUsers();
   const { users } = usersData || {};
+
   const recentPayments = payments ? [...payments].slice(-4).reverse() : [];
 
   return (
     <main
-      className={`text-foreground space-y-8 py-8 lg:px-8 ${
-        (gettingUser || gettingPayments || gettingUsers) && "blur"
+      className={`text-foreground space-y-8 py-8 transition-all duration-500 lg:px-8 ${
+        gettingUser || gettingPayments || gettingUsers
+          ? "opacity-50 blur-sm"
+          : "blur-0 opacity-100"
       }`}
     >
       {/* 1. هدر اصلی با تم داینامیک */}
-      <div className="border-accent/20 bg-surface from-accent/15 via-accent/5 relative overflow-hidden rounded-[32px] border bg-gradient-to-br to-transparent p-8 shadow-sm">
-        {/* افکت‌های نوری پس‌زمینه */}
+      <div className="border-accent/20 bg-surface from-accent/15 via-accent/5 relative overflow-hidden rounded-[32px] border bg-linear-to-br to-transparent p-8 shadow-sm">
         <div className="bg-accent/15 absolute -top-16 -right-16 h-52 w-52 rounded-full blur-3xl" />
         <div className="bg-accent/10 absolute -bottom-16 -left-16 h-52 w-52 rounded-full blur-3xl" />
 
@@ -59,37 +58,9 @@ export default function DashboardPage() {
       </div>
 
       {/* 2. کارت‌های آماری (استیت‌ها) */}
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {/* سفارش‌های فعال */}
-        <div className="border-accent/10 bg-surface from-accent/15 rounded-[28px] border bg-gradient-to-br to-transparent p-6">
-          <div className="bg-accent/15 text-accent mb-5 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl">
-            <svg
-              className="h-6 w-6 stroke-2"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3.35288 14.8117L4.08229 14.6372L3.35288 14.8117ZM3.35288 8.83297L4.08229 9.00752L3.35288 8.83297ZM20.6471 8.83298L19.9177 9.00752L20.6471 8.83298ZM20.6471 14.8117L19.9177 14.6372L20.6471 14.8117ZM15.0496 20.2988L14.8815 19.5679L15.0496 20.2988ZM8.95044 20.2988L8.78237 21.0297L8.95044 20.2988ZM8.95043 3.34591L9.1185 4.07684V4.07684L8.95043 3.34591ZM15.0496 3.34591L14.8815 4.07684L15.0496 3.34591ZM4.08229 14.6372C3.63924 12.7857 3.63924 10.859 4.08229 9.00752L2.62347 8.65843C2.12551 10.7394 2.12551 12.9053 2.62347 14.9863L4.08229 14.6372ZM19.9177 9.00752C20.3608 10.859 20.3608 12.7857 19.9177 14.6372L21.3765 14.9863C21.8745 12.9053 21.8745 10.7394 21.3765 8.65844L19.9177 9.00752ZM14.8815 19.5679C12.9863 20.0036 11.0137 20.0036 9.1185 19.5679L8.78237 21.0297C10.8988 21.5164 13.1012 21.5164 15.2176 21.0297L14.8815 19.5679ZM9.1185 4.07684C11.0137 3.64105 12.9863 3.64105 14.8815 4.07684L15.2176 2.61498C13.1012 2.12834 10.8988 2.12834 8.78237 2.61499L9.1185 4.07684ZM9.1185 19.5679C6.61229 18.9916 4.66599 17.0765 4.08229 14.6372L2.62347 14.9863C3.34276 17.9922 5.73374 20.3287 8.78237 21.0297L9.1185 19.5679ZM15.2176 21.0297C18.2663 20.3287 20.6572 17.9922 21.3765 14.9863L19.9177 14.6372C19.334 17.0765 17.3877 18.9916 14.8815 19.5679L15.2176 21.0297ZM14.8815 4.07684C17.3877 4.65311 19.334 6.56823 19.9177 9.00752L21.3765 8.65844C20.6572 5.65253 18.2663 3.31598 15.2176 2.61498L14.8815 4.07684ZM8.78237 2.61499C5.73373 3.31598 3.34276 5.65252 2.62347 8.65843L4.08229 9.00752C4.66599 6.56823 6.61228 4.65311 9.1185 4.07684L8.78237 2.61499ZM14.8305 21C14.8305 19.5363 14.8322 18.5154 14.9378 17.7451C15.0403 16.998 15.2278 16.5993 15.5196 16.3132L14.4696 15.242C13.8474 15.852 13.5778 16.6223 13.4518 17.5413C13.3289 18.4372 13.3305 19.5795 13.3305 21H14.8305ZM20.3222 14.1316C18.8718 14.1316 17.7101 14.13 16.7998 14.25C15.8695 14.3726 15.0897 14.6341 14.4696 15.242L15.5196 16.3132C15.8135 16.0251 16.2264 15.8385 16.9958 15.7371C17.7852 15.6331 18.8302 15.6316 20.3222 15.6316V14.1316Z"
-                fill="currentColor"
-              />
-              <path
-                d="M9 9H12M9 12H14"
-                stroke="currentColor"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-          <div className="text-foreground text-4xl font-black">
-            {payments?.length}
-          </div>
-          <div className="text-muted mt-2 text-sm font-medium">
-            سفارش‌های فعال
-          </div>
-        </div>
-
+      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {/* محصولات پسندیده */}
-        <div className="border-danger/10 bg-surface from-danger/15 rounded-[28px] border bg-gradient-to-br to-transparent p-6">
+        <div className="border-danger/10 bg-surface from-danger/15 rounded-[28px] border bg-linear-to-br to-transparent p-6 transition-transform hover:scale-[1.02]">
           <div className="bg-danger/15 text-danger mb-5 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl">
             <svg
               className="h-6 w-6"
@@ -97,15 +68,11 @@ export default function DashboardPage() {
               fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                d="M17.6314 10.6994H17.6564C18.0584 10.6994 18.3914 10.3804 18.4054 9.97438C18.4644 8.22938 17.4234 6.94638 15.8154 6.78138C15.4114 6.74738 15.0354 7.03838 14.9924 7.45038C14.9504 7.86238 15.2504 8.23038 15.6624 8.27338C16.4734 8.35638 16.9384 8.97338 16.9064 9.92438C16.8924 10.3384 17.2174 10.6854 17.6314 10.6994Z"
-                fill="currentColor"
-              />
+              <path d="M17.6314 10.6994H17.6564C18.0584 10.6994 18.3914 10.3804 18.4054 9.97438C18.4644 8.22938 17.4234 6.94638 15.8154 6.78138C15.4114 6.74738 15.0354 7.03838 14.9924 7.45038C14.9504 7.86238 15.2504 8.23038 15.6624 8.27338C16.4734 8.35638 16.9384 8.97338 16.9064 9.92438C16.8924 10.3384 17.2174 10.6854 17.6314 10.6994Z" />
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M2.15932 12.6389C3.95332 18.2229 9.94632 21.2359 12.0023 21.2359C14.0733 21.2359 20.0863 18.2219 21.8423 12.6379C22.9923 9.04591 21.7173 4.35791 17.6513 3.04791C15.9193 2.49291 13.5463 2.69691 11.9803 4.28991C10.5293 2.89591 8.37332 2.39291 6.34232 3.04891C2.28032 4.35591 1.00732 9.04491 2.15832 12.6379L2.15932 12.6389ZM12.0023 19.7359C10.8173 19.7359 5.23432 17.3059 3.58732 12.1809C2.65632 9.27291 3.62032 5.50091 6.80232 4.47591C8.19332 4.02691 10.2253 4.27891 11.3943 5.89291C11.5393 6.09191 11.7713 6.19191 12.0183 6.20191C12.2643 6.19691 12.4923 6.07091 12.6283 5.86591C13.6943 4.24791 15.7423 4.01191 17.1923 4.47591C20.3773 5.50191 21.3433 9.27391 20.4123 12.1839C18.8013 17.3069 13.1963 19.7359 12.0023 19.7359Z"
-                fill="currentColor"
               />
             </svg>
           </div>
@@ -117,8 +84,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* محصولات */}
-        <div className="border-warning/10 bg-surface from-warning/15 rounded-[28px] border bg-gradient-to-br to-transparent p-6 xl:col-span-1">
+        {/* محصولات ثبت‌شده */}
+        <div className="border-warning/10 bg-surface from-warning/15 rounded-[28px] border bg-linear-to-br to-transparent p-6 transition-transform hover:scale-[1.02]">
           <div className="bg-warning/15 text-warning mb-5 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl">
             <svg
               className="h-6 w-6"
@@ -131,10 +98,10 @@ export default function DashboardPage() {
                 fill="currentColor"
               />
               <path
-                d="M14 7L14.0408 7.00583C15.7484 7.24978 17 8.51614 17 10"
                 stroke="currentColor"
-                strokeWidth="2"
                 strokeLinecap="round"
+                strokeWidth="2"
+                d="M14 7L14.0408 7.00583C15.7484 7.24978 17 8.51614 17 10"
               />
             </svg>
           </div>
@@ -145,7 +112,7 @@ export default function DashboardPage() {
         </div>
 
         {/* کاربران */}
-        <div className="border-success/10 bg-surface from-success/15 rounded-[28px] border bg-gradient-to-br to-transparent p-6 xl:col-span-1">
+        <div className="border-success/10 bg-surface from-success/15 rounded-[28px] border bg-linear-to-br to-transparent p-6 transition-transform hover:scale-[1.02]">
           <div className="bg-success/15 text-success mb-5 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl">
             <svg
               className="h-6 w-6"
@@ -168,7 +135,7 @@ export default function DashboardPage() {
             </svg>
           </div>
           <div className="text-foreground text-4xl font-black">
-            {users?.length}
+            {users?.length || 0}
           </div>
           <div className="text-muted mt-2 text-sm font-medium">کاربران</div>
         </div>
@@ -183,7 +150,7 @@ export default function DashboardPage() {
               سفارشات در حال پردازش
             </h2>
             <Link href="/admin/payments">
-              <button className="text-accent flex items-center gap-1 text-xs font-black">
+              <button className="text-accent flex items-center gap-1 text-xs font-black transition-opacity hover:opacity-80">
                 همه سفارشات <ChevronLeft className="h-4 w-4" />
               </button>
             </Link>
@@ -194,7 +161,7 @@ export default function DashboardPage() {
               recentPayments.map((item) => (
                 <div
                   key={item._id}
-                  className="border-border bg-surface-secondary flex items-center justify-between gap-4 rounded-2xl border p-4 transition"
+                  className="border-border bg-surface-secondary hover:border-border/80 flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 transition-colors sm:flex-row sm:items-center"
                 >
                   <div className="flex items-center gap-4">
                     <div className="bg-surface text-accent flex h-12 w-12 items-center justify-center rounded-xl shadow-sm">
@@ -212,14 +179,14 @@ export default function DashboardPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-left">
+                  <div className="flex w-full items-center justify-between sm:w-auto sm:flex-col sm:items-end sm:gap-2">
                     <p className="text-foreground text-sm font-black">
-                      {item.amount.toLocaleString()}
+                      {item.amount.toLocaleString("fa-IR")}
                       <span className="text-muted text-[10px]"> تومان</span>
                     </p>
                     <Chip
                       className="font-bold"
-                      variant="soft"
+                      variant="flat"
                       color={item.status === "COMPLETED" ? "success" : "danger"}
                     >
                       {item.status === "COMPLETED" ? "موفق" : "ناموفق"}
@@ -228,15 +195,17 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <p className="text-muted text-center text-sm">
-                هیچ سفارشی ثبت نشده است.
-              </p>
+              <div className="border-border flex h-32 items-center justify-center rounded-2xl border border-dashed">
+                <p className="text-muted text-sm font-bold">
+                  هیچ سفارشی ثبت نشده است.
+                </p>
+              </div>
             )}
           </div>
         </div>
 
         {/* وضعیت تکمیل پروفایل */}
-        <AccountProgress completedSteps={userInfoCount} />
+        <AccountProgress completedSteps={completedSteps} />
       </section>
 
       {/* 4. بخش‌های عملیاتی (ردیف دوم) */}
@@ -248,8 +217,10 @@ export default function DashboardPage() {
               <Ticket className="text-accent h-5 w-5" /> تیکت‌های اخیر
             </h2>
             <button
-              onClick={() => toast.info("این بخش به زودی در دسترس قرار میگیرد")}
-              className="bg-accent/10 text-accent rounded-xl px-3 py-1.5 text-xs font-black"
+              onClick={() =>
+                toast.info("این بخش به زودی در دسترس قرار می‌گیرد")
+              }
+              className="bg-accent/10 text-accent hover:bg-accent/20 rounded-xl px-3 py-1.5 text-xs font-black transition-colors"
             >
               ثبت تیکت جدید
             </button>
@@ -281,8 +252,10 @@ export default function DashboardPage() {
               <MapPin className="text-danger h-5 w-5" /> آدرس پیش‌فرض
             </h2>
             <button
-              onClick={() => toast.info("این بخش به زودی در دسترس قرار میگیرد")}
-              className="text-muted text-xs font-black hover:opacity-80"
+              onClick={() =>
+                toast.info("این بخش به زودی در دسترس قرار می‌گیرد")
+              }
+              className="text-muted hover:text-foreground text-xs font-black transition-colors"
             >
               ویرایش
             </button>
@@ -297,7 +270,7 @@ export default function DashboardPage() {
                 تهران، سعادت آباد، خیابان سرو غربی، پلاک ۱۲، واحد ۴
               </p>
               <p className="text-muted mt-2 text-[10px] font-black">
-                گیرنده: {"هوراد"}
+                گیرنده: {user?.name || "کاربر سیستم"}
               </p>
             </div>
           </div>

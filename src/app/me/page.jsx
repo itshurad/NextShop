@@ -57,7 +57,7 @@ export default function CompleteProfilePage() {
     <Form onSubmit={onSubmit} className="w-full">
       <div className="text-foreground mx-auto w-full max-w-7xl space-y-8 py-8 lg:px-8">
         {/* 1. هدر فرم با تم داینامیک */}
-        <div className="border-accent/20 bg-surface from-accent/15 via-accent/5 relative overflow-hidden rounded-[32px] border bg-gradient-to-br to-transparent p-8 md:p-10">
+        <div className="border-accent/20 bg-surface from-accent/15 via-accent/5 relative overflow-hidden rounded-[32px] border bg-linear-to-br to-transparent p-8 md:p-10">
           {/* افکت‌های نوری پس‌زمینه */}
           <div className="bg-accent/15 absolute -top-10 -left-10 h-40 w-40 rounded-full blur-3xl" />
           <div className="bg-accent/10 absolute -right-10 -bottom-10 h-40 w-40 rounded-full blur-3xl" />
@@ -183,7 +183,7 @@ export default function CompleteProfilePage() {
           <div className="lg:col-span-4">
             <div className="sticky top-6 flex flex-col gap-6">
               {/* کارت اکشن نهایی */}
-              <Card className="border-accent/20 bg-surface from-accent/15 via-accent/5 overflow-hidden rounded-[28px] border bg-gradient-to-br to-transparent p-6">
+              <Card className="border-accent/20 bg-surface from-accent/15 via-accent/5 overflow-hidden rounded-[28px] border bg-linear-to-br to-transparent p-6">
                 <div className="mb-5 flex items-center gap-4">
                   <div className="bg-accent/15 text-accent flex h-14 w-14 items-center justify-center rounded-2xl text-2xl">
                     ✨

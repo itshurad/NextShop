@@ -1,10 +1,12 @@
 "use client";
+
 import React from "react";
 import { useParams } from "next/navigation";
-import CouponForm from "../_/CouponForm";
+import CouponForm from "../../_/CouponForm";
 
-export default function page() {
+export default function EditCouponPage() {
   const { id } = useParams();
+
   return (
     <div>
       <CouponForm id={id} />

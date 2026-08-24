@@ -1,13 +1,10 @@
-"use client";
 import React from "react";
 import CouponForm from "../_/CouponForm";
 
-function page() {
+export default function CreateCouponPage() {
   return (
     <div>
       <CouponForm />
     </div>
   );
 }
-
-export default page;

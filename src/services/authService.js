@@ -1,31 +1,28 @@
 import http from "./httpService";
 
-export async function getOtp(data) {
-  return http.post(`/user/get-otp`, data).then(({ data }) => data.data);
+export function getOtp(data) {
+  return http.post(`/user/get-otp`, data);
 }
-export async function checkOtp(data) {
-  return http.post(`/user/check-otp`, data).then(({ data }) => data.data);
+export function checkOtp(data) {
+  return http.post(`/user/check-otp`, data);
 }
-export async function completeProfile(data) {
-  return http
-    .post(`/user/complete-profile`, data)
-    .then(({ data }) => data.data);
+export function completeProfile(data) {
+  return http.post(`/user/complete-profile`, data);
 }
-export async function getUserProfile() {
-  return await http.get(`/user/profile`).then(({ data }) => data.data);
+export function getUserProfile() {
+  return http.get(`/user/profile`);
 }
-export async function refreshToken() {
-  return await http.get(`/user/get-otp`).then(({ data }) => data.data);
+export function refreshToken() {
+  return http.get(`/user/refresh-token`); // باگ مسیر در اینجا اصلاح شد
 }
 export function updateProfile(data) {
-  return http.patch("/user/update", data).then(({ data }) => data.data);
+  return http.patch("/user/update", data);
 }
-
 export function logout() {
   return http.post("/user/logout");
 }
 
-// admin related fetchs :
+// admin related fetches :
 export function getAllUsers() {
-  return http.get("/admin/user/list").then(({ data }) => data.data);
+  return http.get("/admin/user/list");
 }

@@ -1,43 +1,64 @@
-const { default: axios } = require("axios");
+import axios from "axios";
 
 const app = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   withCredentials: true,
 });
 
-// accessToken => jwt => national-id => unique !  => user id => jwt => localStorage , cookie
-// http only => no access on browser (js) => safe =>
-// =>  id = 1234566 => jwt => AFDSFSLKAQTEWRLDAKSJFEQRERQWLRKJ3434DFSDF => COOKIES =>
-
-// accessToken => 24 hrs =>
-// refreshToken => 30 days =>
-
-// 1. => access : OK => continue ...
-// 2. => access : EXPIRE => 1. log out =>  ...  2. login => HOW ?? =>
-//  based on refreshToken => create new accessToken => 24 hrs , 30 days => ...continue ...
-// 3. refresh : EXPIRES => new login =>
-
 app.interceptors.request.use(
   (res) => res,
   (err) => Promise.reject(err),
 );
 
+// متغیرهایی برای مدیریت ریکوئست‌های همزمان هنگام رفرش توکن
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 app.interceptors.response.use(
-  (res) => res,
+  // با این خط، دیگر نیازی نیست در سرویس‌ها بنویسیم: .then(({ data }) => data.data)
+  (res) => res.data.data,
   async (err) => {
     const originalConfig = err.config;
-    if (err.response.status === 401 && !originalConfig._retry) {
+
+    if (err.response?.status === 401 && !originalConfig._retry) {
+      if (isRefreshing) {
+        // اگر توکن در حال رفرش شدن است، بقیه ریکوئست‌ها را در صف نگه می‌داریم
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => app(originalConfig))
+          .catch((err) => Promise.reject(err));
+      }
+
       originalConfig._retry = true;
+      isRefreshing = true;
+
       try {
-        const { data } = await axios.get(
+        await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/user/refresh-token`,
           {
             withCredentials: true,
           },
         );
-        if (data) return app(originalConfig);
+
+        processQueue(null);
+        return app(originalConfig);
       } catch (error) {
+        processQueue(error);
         return Promise.reject(error);
+      } finally {
+        isRefreshing = false;
       }
     }
     return Promise.reject(err);
