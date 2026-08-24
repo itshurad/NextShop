@@ -8,6 +8,10 @@ import {
   Smartphone,
   Grid,
   ArrowLeft,
+  BookOpen,
+  Refrigerator,
+  Shirt,
+  CookingPot,
 } from "lucide-react";
 import { getCategories } from "@/services/categoryService";
 import { getProducts } from "@/services/productService";
@@ -21,15 +25,15 @@ import {
 } from "lucide-react";
 import { FireIcon, MobileIcon } from "@/app/Icons/Icons";
 import ProductCard from "./components/ProductCard";
-// import ProductCard from "./components/ProductCard";
 
 const categoryIcons = {
   mobile: Smartphone,
+  "book-and-media": BookOpen,
+  "personal-appliance": Sparkles,
+  "category-home-appliance": Refrigerator,
   laptop: Laptop,
-  watch: Watch,
-  audio: Headphones,
-  camera: Camera,
-  gaming: Gamepad2,
+  apparel: Shirt,
+  "home-and-kitchen": CookingPot,
 };
 
 export default async function HomePage() {

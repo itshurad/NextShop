@@ -13,7 +13,7 @@ export default function ProductCard({ product, isPopular = false }) {
       : 0;
 
   return (
-    <div className="group border-border/80 bg-surface shadow-accent/5 hover:shadow-accent/10 relative flex flex-col rounded-[24px] border p-2.5 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl md:rounded-[36px] md:p-4">
+    <div className="group border-border/80 bg-surface shadow-accent/5 hover:shadow-accent/10 relative flex flex-col rounded-[24px] border p-2.5 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl md:rounded-[28px] md:p-2">
       <div className="bg-surface-secondary relative flex aspect-square max-h-75 w-full items-center justify-center overflow-hidden rounded-[18px] p-2 md:rounded-[22px] md:p-4">
         <Link
           href={`/products/${product.slug}`}
@@ -50,7 +50,7 @@ export default function ProductCard({ product, isPopular = false }) {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col pt-3 md:p-4 md:pt-5">
+      <div className="flex flex-1 flex-col pt-3 md:p-2 md:pt-5">
         <div className="text-muted mb-2 flex items-center justify-between text-[8px] font-black tracking-wide md:mb-3.5 md:text-[10px]">
           <div className="border-success/10 bg-success/5 text-success flex items-center gap-1 rounded-lg border px-2.5 py-1 md:gap-1.5">
             <span className="bg-success h-1 w-1 animate-pulse rounded-full md:h-1.5 md:w-1.5"></span>

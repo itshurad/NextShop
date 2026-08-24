@@ -27,7 +27,7 @@ export default async function Page({ searchParams }) {
             </span>
           </div>
 
-          <h1 className="text-foreground text-3xl leading-tight font-black tracking-tight md:text-6xl">
+          <h1 className="text-foreground text-3xl leading-tight font-black tracking-tight md:text-6xl flex items-center gap-2">
             محصولات
             <span className="text-accent relative">
               ویژه

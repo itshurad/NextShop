@@ -32,19 +32,20 @@ export default function SearchBox() {
       <Input
         type="text"
         value={search}
+        fullWidth
         onChange={(e) => setSearch(e.target.value)}
         placeholder="جستجو در محصولات..."
         variant="flat"
         classnames={{
           inputWrapper:
-            "h-14 bg-surface rounded-2xl shadow-sm border border-border focus-within:!border-accent focus-within:!bg-surface transition-all",
+            "h-16 bg-surface rounded-2xl shadow-sm border border-border focus-within:!border-accent focus-within:!bg-surface transition-all",
           input:
             "text-sm font-bold text-foreground placeholder:text-muted/60 pr-2",
         }}
         startcontent={
           <button
             type="submit"
-            className="text-muted hover:text-accent p-1 transition-colors"
+            className="text-muted hover:text-accent transition-colors"
           >
             <Search className="h-5 w-5" />
           </button>

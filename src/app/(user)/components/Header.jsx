@@ -41,7 +41,7 @@ export default function Header() {
           isLoading ? "pointer-events-none blur-sm" : ""
         }`}
       >
-        <div className="flex h-20 items-center justify-between px-4 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-350 items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-8">
             <button
               onClick={() => setIsOpenMenu(true)}

@@ -57,12 +57,15 @@ export default function AccordionBox() {
   };
 
   return (
-    <Accordion hideSeparator className="w-full">
+    <Accordion hideSeparator className="w-full space-y-2">
+      {/* ---------------- بخش دسته‌بندی محصولات ---------------- */}
       <Accordion.Item>
         <Accordion.Heading>
-          <Accordion.Trigger className="hover:rounded-4xl">
+          {/* استایل تریگر یکدست شد */}
+          <Accordion.Trigger className="hover:bg-default-100 w-full rounded-xl px-3 py-3 transition-colors">
             <div className="flex flex-1 items-center gap-3">
-              <div className="bg-accent/10 rounded-lg p-1.5">
+              {/* استایل آیکون یکدست شد */}
+              <div className="bg-accent/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
                 <Layers3 className="text-accent h-4 w-4" />
               </div>
               <span className="text-foreground text-sm font-black">
@@ -70,14 +73,16 @@ export default function AccordionBox() {
               </span>
             </div>
             <Accordion.Indicator>
-              <ChevronDown className="text-muted" />
+              <ChevronDown className="text-muted h-4 w-4" />
             </Accordion.Indicator>
           </Accordion.Trigger>
         </Accordion.Heading>
+
         <Accordion.Panel>
-          <Accordion.Body className="space-y-3 px-10 pb-4">
+          {/* پدینگ‌ها و فاصله‌ها استاندارد شد */}
+          <Accordion.Body className="flex flex-col gap-2 px-5 pt-1 pb-4">
             {isLoading ? (
-              <div className="flex justify-center py-2">
+              <div className="flex justify-center py-4">
                 <Spinner size="sm" />
               </div>
             ) : (
@@ -92,6 +97,8 @@ export default function AccordionBox() {
                   key={category._id}
                   id={category._id}
                   variant="secondary"
+                  // افکت هاور و فاصله برای چک‌باکس‌ها
+                  className="hover:bg-default-100 w-full rounded-lg p-2 transition-colors"
                 >
                   <Checkbox.Control>
                     <Checkbox.Indicator />
@@ -111,11 +118,12 @@ export default function AccordionBox() {
         </Accordion.Panel>
       </Accordion.Item>
 
+      {/* ---------------- بخش مرتب‌سازی محصولات ---------------- */}
       <Accordion.Item>
         <Accordion.Heading>
-          <Accordion.Trigger className="hover:rounded-4xl">
+          <Accordion.Trigger className="hover:bg-default-100 w-full rounded-xl px-3 py-3 transition-colors">
             <div className="flex flex-1 items-center gap-3">
-              <div className="bg-accent/10 rounded-lg p-1.5">
+              <div className="bg-accent/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
                 <ArrowUpDown className="text-accent h-4 w-4" />
               </div>
               <span className="text-foreground text-sm font-black">
@@ -123,15 +131,17 @@ export default function AccordionBox() {
               </span>
             </div>
             <Accordion.Indicator>
-              <ChevronDown className="text-muted" />
+              <ChevronDown className="text-muted h-4 w-4" />
             </Accordion.Indicator>
           </Accordion.Trigger>
         </Accordion.Heading>
+
         <Accordion.Panel>
-          <Accordion.Body className="px-10 pb-4">
+          {/* دقیقاً همون پدینگ‌های بخش بالا رو اینجا هم گذاشتم تا تراز بشن */}
+          <Accordion.Body className="px-5 pt-1 pb-4">
             {isLoading ? (
-              <div className="flex justify-center py-2">
-                <Spinner size="sm" />
+              <div className="flex items-center justify-center py-4">
+                <Spinner size="lg" />
               </div>
             ) : (
               <RadioGroup
@@ -139,15 +149,20 @@ export default function AccordionBox() {
                 value={sortCategory}
                 onChange={handleSortCategory}
                 name="product-sort"
-                className="space-y-3"
+                className="flex flex-col gap-2"
               >
-                {SORT?.map((item) => (
-                  <Radio value={item.value} key={item._id}>
+                {SORT.map((item) => (
+                  <Radio
+                    key={item._id}
+                    value={item.value}
+                    // کلاس‌ها با چک‌باکس‌های بالا مچ شدند
+                    className="hover:bg-default-100 w-full rounded-lg px-2 transition-colors"
+                  >
                     <Radio.Control>
                       <Radio.Indicator />
                     </Radio.Control>
-                    <Radio.Content>
-                      <Label className="text-foreground/90 cursor-pointer text-xs font-bold">
+                    <Radio.Content className="flex-1">
+                      <Label className="text-foreground/90 block w-full cursor-pointer text-xs font-bold">
                         {item.title}
                       </Label>
                     </Radio.Content>
