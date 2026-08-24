@@ -26,7 +26,6 @@ const processQueue = (error, token = null) => {
 };
 
 app.interceptors.response.use(
-  // با این خط، دیگر نیازی نیست در سرویس‌ها بنویسیم: .then(({ data }) => data.data)
   (res) => res.data.data,
   async (err) => {
     const originalConfig = err.config;
