@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+// import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Toast } from "@heroui/react";
 
 export default function Providers({ children }) {
@@ -21,19 +21,19 @@ export default function Providers({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NextThemesProvider
+      {/* <NextThemesProvider
         attribute="class"
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange
-      >
+      > */}
         <Toast.Provider
           dir="rtl"
           className="text-right font-sans"
           placement="top"
         />
         {children}
-      </NextThemesProvider>
+      {/* </NextThemesProvider> */}
     </QueryClientProvider>
   );
 }

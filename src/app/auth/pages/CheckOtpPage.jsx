@@ -69,7 +69,7 @@ function CheckOtpPage({
                 segment: [
                   "h-14 w-12 rounded-2xl",
                   "text-lg font-black text-field-foreground",
-                  "bg-field-background border-border",
+                  "bg-field-accent border-border",
                   "transition-all duration-300",
                   "focus-within:!border-accent focus-within:shadow-[0_0_15px_rgba(var(--accent),0.1)]",
                 ],

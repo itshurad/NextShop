@@ -5,10 +5,12 @@ import MobileFilter from "../../components/MobileFilter";
 import { getProducts } from "@/services/productService";
 import ProductCard from "../../components/ProductCard";
 
-export default async function page({ searchParams }) {
-  const { products } = await getProducts(
-    queryString.stringify(await searchParams),
-  );
+export default async function Page({ searchParams }) {
+  const params = await searchParams;
+
+  const result = await getProducts(queryString.stringify(params));
+
+  const products = result?.products || [];
 
   return (
     <main className="mx-auto w-full px-2 pb-24 md:px-6">

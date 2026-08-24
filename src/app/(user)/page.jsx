@@ -33,23 +33,37 @@ const categoryIcons = {
 };
 
 export default async function HomePage() {
-  const [categoriesData, popularData, mobileData, latestData] =
-    await Promise?.all([
-      getCategories(),
-      getProducts("sort=popular"),
-      getProducts("category=mobile"),
-      getProducts("sort=latest"),
-    ]);
+  const results = await Promise.allSettled([
+    getCategories(),
+    getProducts("sort=popular"),
+    getProducts("category=mobile"),
+    getProducts("sort=latest"),
+  ]);
+
+  const getResultData = (result) => {
+    if (result.status !== "fulfilled") {
+      return [];
+    }
+
+    return result.value;
+  };
+
+  const categoriesData = getResultData(results[0]);
+  const popularData = getResultData(results[1]);
+  const mobileData = getResultData(results[2]);
+  const latestData = getResultData(results[3]);
 
   const categories =
     categoriesData?.data?.categories || categoriesData?.categories || [];
+
   const latestProducts =
     latestData?.data?.products || latestData?.products || [];
+
   const popularProducts =
     popularData?.data?.products || popularData?.products || [];
+
   const mobileProducts =
     mobileData?.data?.products || mobileData?.products || [];
-
   return (
     <main className="mx-auto max-w-7xl space-y-20 px-4 pt-4 md:px-8">
       <section className="grid grid-cols-1 gap-6 pt-4 lg:grid-cols-3">
