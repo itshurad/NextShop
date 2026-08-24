@@ -14,9 +14,11 @@ function OtpPage({ phoneNumber, setPhoneNumber, handleGetOtp, isLoading }) {
         <div className="mb-8 flex flex-col gap-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-x-2">
-              <div className="bg-accent h-2 w-2 animate-pulse rounded-full shadow-[0_0_12px_var(--accent)]" />
+              <div className="flex items-center gap-x-1">
+                <div className="bg-accent h-2 w-2 animate-pulse rounded-full shadow-[0_0_12px_var(--accent)]" />
+              </div>
               <span className="text-muted text-[10px] font-black tracking-[0.15em]">
-                DIGISTORE SECURE
+                دیجی استور
               </span>
             </div>
 
@@ -32,7 +34,7 @@ function OtpPage({ phoneNumber, setPhoneNumber, handleGetOtp, isLoading }) {
 
           <div className="space-y-1.5 text-right">
             <h1 className="text-foreground text-2xl font-black tracking-tight">
-              اصالت و امنیت
+              وارد شوید
             </h1>
             <p className="text-muted text-xs leading-relaxed font-medium">
               جهت ورود به کابین مدیریت دیجی‌استور، شماره همراه خود را احراز
@@ -40,7 +42,6 @@ function OtpPage({ phoneNumber, setPhoneNumber, handleGetOtp, isLoading }) {
             </p>
           </div>
         </div>
-
         {/* فیلد ورودی کامپتیبل */}
         <div className="space-y-6">
           <Input
@@ -65,16 +66,10 @@ function OtpPage({ phoneNumber, setPhoneNumber, handleGetOtp, isLoading }) {
             type="submit"
             size="lg"
             isLoading={isLoading}
-            className="bg-accent text-accent-foreground h-14 w-full rounded-2xl text-xs font-black shadow-[0_10px_25px_-5px_var(--accent)] transition-all duration-300 hover:opacity-90 active:scale-[0.99]"
+            className="bg-accent text-accent-foreground h-14 w-full rounded-2xl text-xs font-black shadow-[0_2px_15px_-5px_var(--accent)] transition-all duration-300 hover:opacity-90 active:scale-[0.99]"
           >
             درخواست صدور کد تایید
           </Button>
-        </div>
-
-        {/* فوتر امنیتی */}
-        <div className="border-separator text-muted mt-8 flex items-center justify-center gap-x-1.5 border-t pt-4 text-[10px] font-medium">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          <span>پروتکل رمزنگاری شده سرتاسری TLS 1.3</span>
         </div>
       </Card>
     </form>

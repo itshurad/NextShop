@@ -26,11 +26,24 @@ function CheckOtpPage({
         {/* هدر تایید فرکانس امنیتی */}
         <div className="mb-8 flex flex-col gap-y-5">
           <div className="flex items-center justify-between">
-            <div className="text-accent flex items-center gap-x-2">
-              <KeyRound className="h-4 w-4" />
-              <span className="text-[10px] font-black tracking-[0.15em]">
-                SECURE GATEWAY
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-1">
+                  <div className="bg-accent h-2 w-2 animate-pulse rounded-full shadow-[0_0_12px_var(--accent)]" />
+                </div>
+                <span className="text-muted text-[10px] font-black tracking-[0.15em]">
+                  دیجی استور
+                </span>
+              </div>
+
+              <Button
+                isIconOnly
+                variant="light"
+                onPress={() => router.back()}
+                className="text-muted hover:border-border h-9 w-9 rounded-xl border border-transparent transition-all duration-300"
+              >
+                <ArrowLeft className="h-4 w-4 stroke-2" />
+              </Button>
             </div>
 
             <Button
@@ -62,6 +75,7 @@ function CheckOtpPage({
           <div className="flex justify-center" dir="ltr">
             <InputOTP
               value={otp}
+            variant="secondary"
               onChange={setOtp}
               maxLength={6}
               classnames={{
@@ -124,16 +138,10 @@ function CheckOtpPage({
             type="submit"
             size="lg"
             isLoading={isLoadingCheck}
-            className="bg-accent text-accent-foreground h-14 w-full rounded-2xl text-xs font-black shadow-[0_10px_25px_-5px_var(--accent)] transition-all duration-300 hover:opacity-90 active:scale-[0.99]"
+            className="bg-accent text-accent-foreground h-14 w-full rounded-2xl text-xs font-black shadow-[0_2px_15px_-5px_var(--accent)] transition-all duration-300 hover:opacity-90 active:scale-[0.99]"
           >
             رمزگشایی و ورود به داشبورد
           </Button>
-        </div>
-
-        {/* فوتر امنیتی پایانی */}
-        <div className="border-separator text-muted mt-8 flex items-center justify-center gap-x-1.5 border-t pt-4 text-[10px] font-medium">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          <span>پروتکل رمزنگاری شده سرتاسری TLS 1.3</span>
         </div>
       </Card>
     </form>
