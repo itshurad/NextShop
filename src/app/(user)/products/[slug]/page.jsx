@@ -1,4 +1,3 @@
-// import { getOneProdcutBySlug, getProducts } from "@/services/productService";
 import {
   Star,
   ShieldCheck,
@@ -18,13 +17,30 @@ import React from "react";
 import AddToCart from "../../components/AddToCart";
 import LikeButton from "../../components/LikeButton";
 import { getOneProductBySlug, getProducts } from "@/services/productService";
+import { notFound } from "next/navigation"; // ایمپورت اضافه شده
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export default async function page({ params }) {
   const { slug } = await params;
-  const { product } = await getOneProductBySlug(slug);
+
+  let product = null;
+
+  // اضافه شدن ساختار مدیریت خطا
+  try {
+    const response = await getOneProductBySlug(slug);
+    product = response?.product;
+
+    // اگر ریکوئست موفق بود اما دیتایی برنگشت
+    if (!product) {
+      notFound();
+    }
+  } catch (error) {
+    // در صورت بروز خطای 404 از سمت سرور یا هر خطای دیگری، صفحه 404 رندر می‌شود
+    console.error(`[Build Skip] Product not found: ${slug}`);
+    notFound();
+  }
 
   const discountPercent =
     product.price && product.offPrice
