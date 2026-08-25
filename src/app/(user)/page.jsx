@@ -65,11 +65,11 @@ export default async function HomePage() {
       ========================================================= */}
       <section className="grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3">
         {/* Main Hero */}
-        <div className="group from-foreground via-foreground/95 to-accent/40 text-background shadow-accent/20 relative flex min-h-[400px] flex-col justify-between overflow-hidden rounded-3xl bg-linear-to-br p-6 shadow-2xl md:min-h-[480px] md:rounded-[40px] md:p-12 lg:col-span-2">
+        <div className="group from-foreground via-foreground/95 to-accent/40 text-background shadow-accent/20 relative flex min-h-100 flex-col justify-between overflow-hidden rounded-3xl bg-linear-to-br p-6 shadow-2xl md:min-h-120 md:rounded-[40px] md:p-12 lg:col-span-2">
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             <div className="from-accent/30 to-accent/0 absolute -top-20 -left-20 h-72 w-72 rounded-full bg-linear-to-br blur-3xl transition-transform duration-700 group-hover:scale-110 md:h-96 md:w-96" />
             <div className="bg-accent/10 absolute right-1/4 -bottom-20 h-60 w-60 rounded-full blur-3xl md:h-80 md:w-80" />
-            <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] mask-[radial-gradient(ellipse_at_center,transparent_30%,#000_100%)] bg-[size:20px_20px]" />
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] mask-[radial-gradient(ellipse_at_center,transparent_30%,#000_100%)] bg-size-[20px_20px]" />
           </div>
 
           <div className="relative z-10 max-w-lg space-y-4 md:space-y-6">
@@ -95,7 +95,7 @@ export default async function HomePage() {
           <div className="relative z-10 pt-8">
             <Link
               href="/products"
-              className="group/btn bg-background text-foreground hover:bg-surface-secondary inline-flex min-h-[48px] items-center gap-2.5 rounded-2xl px-8 py-3 text-sm font-black shadow-xl transition-all duration-300 hover:scale-[1.02]"
+              className="group/btn bg-background text-foreground hover:bg-surface-secondary inline-flex min-h-12 items-center gap-2.5 rounded-2xl px-8 py-3 text-sm font-black shadow-xl transition-all duration-300 hover:scale-[1.02]"
             >
               شروع کاوش در بازار
               <ArrowLeft className="h-4 w-4 transition-transform group-hover/btn:-translate-x-1.5" />
@@ -273,7 +273,7 @@ export default async function HomePage() {
             {latestProducts?.slice(0, 3).map((product) => (
               <div
                 key={product._id}
-                className="w-[280px] shrink-0 snap-center sm:w-[320px] md:w-auto md:shrink"
+                className="w-70 shrink-0 snap-center sm:w-[320px] md:w-auto md:shrink"
               >
                 <ProductCard product={product} />
               </div>
@@ -313,7 +313,7 @@ export default async function HomePage() {
             {popularProducts?.slice(0, 3).map((product) => (
               <div
                 key={product._id}
-                className="w-[280px] shrink-0 snap-center sm:w-[320px] md:w-auto md:shrink"
+                className="w-70 shrink-0 snap-center sm:w-[320px] md:w-auto md:shrink"
               >
                 <ProductCard product={product} isPopular />
               </div>

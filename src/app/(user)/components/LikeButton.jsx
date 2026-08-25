@@ -27,7 +27,7 @@ export default function LikeButton({ product, className }) {
       onClick={() => handleLike()}
       variant="light" // تغییر به light تا استایل‌های Tailwind به درستی اعمال شوند
       isIconOnly
-      className={`min-w-0 !p-0 ${className} flex items-center justify-center active:scale-90`}
+      className={`min-w-0 p-0! ${className} flex items-center justify-center active:scale-90`}
     >
       {isLoading ? (
         <Spinner size="sm" color="danger" />
