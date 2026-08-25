@@ -14,7 +14,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="border-border from-surface/50 to-surface text-foreground relative mt-20 border-t bg-linear-to-b pt-16 pb-8 backdrop-blur-md">
+    <footer className="border-border from-surface/50 to-surface text-foreground relative border-t bg-linear-to-b pt-16 pb-8 backdrop-blur-md">
       <div className="mx-auto max-w-350 px-4 md:px-8">
         <div className="border-border bg-surface grid grid-cols-2 gap-6 rounded-[32px] border p-6 shadow-sm sm:grid-cols-4 md:p-8">
           <div className="flex flex-col items-center space-y-2 text-center">

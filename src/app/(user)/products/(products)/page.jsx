@@ -64,7 +64,7 @@ export default async function Page({ searchParams }) {
       <MobileFilter totalProducts={products?.length || 0} />
 
       {/* Grid */}
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6">
         {products?.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
