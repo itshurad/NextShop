@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+
 import {
   ChevronLeft,
   Sparkles,
@@ -12,17 +13,13 @@ import {
   Refrigerator,
   Shirt,
   CookingPot,
-} from "lucide-react";
-import { getCategories } from "@/services/categoryService";
-import { getProducts } from "@/services/productService";
-import {
   Laptop,
-  Watch,
-  Headphones,
-  Camera,
-  Gamepad2,
   Layers,
 } from "lucide-react";
+
+import { getCategories } from "@/services/categoryService";
+import { getProducts } from "@/services/productService";
+
 import { FireIcon, MobileIcon } from "@/app/Icons/Icons";
 import ProductCard from "./components/ProductCard";
 
@@ -68,24 +65,34 @@ export default async function HomePage() {
 
   const mobileProducts =
     mobileData?.data?.products || mobileData?.products || [];
+
   return (
     <main className="mx-auto max-w-7xl space-y-20 px-4 pt-4 md:px-8">
+      {/* =========================================================
+          HERO
+      ========================================================= */}
+
       <section className="grid grid-cols-1 gap-6 pt-4 lg:grid-cols-3">
+        {/* Main Hero */}
         <div className="group from-foreground via-foreground/95 to-accent/40 text-background shadow-accent/20 relative flex min-h-105 flex-col justify-between overflow-hidden rounded-[36px] bg-linear-to-br p-8 shadow-2xl md:p-12 lg:col-span-2">
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             <div className="from-accent/30 to-accent/0 absolute -top-20 -left-20 h-96 w-96 rounded-full bg-linear-to-br blur-3xl transition-transform duration-700 group-hover:scale-110" />
+
             <div className="bg-accent/10 absolute right-1/4 -bottom-20 h-80 w-80 rounded-full blur-3xl" />
+
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] mask-[radial-gradient(ellipse_at_center,transparent_30%,#000_100%)] bg-size-[20px_20px]" />
           </div>
 
           <div className="relative z-10 max-w-md space-y-5">
             <span className="border-accent/30 bg-accent/10 text-accent inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-black tracking-wide shadow-inner backdrop-blur-xl">
               <Sparkles className="text-accent h-3.5 w-3.5 animate-pulse" />
+
               <span>بازار هوشمند گجت‌ها</span>
             </span>
 
             <h1 className="text-3xl leading-[1.35] font-black sm:text-4xl lg:text-5xl">
-              پیشرفته‌ترین گجت‌ها، <br />
+              پیشرفته‌ترین گجت‌ها،
+              <br />
               <span className="from-accent via-accent/80 to-accent/60 bg-linear-to-r bg-clip-text text-transparent drop-shadow-sm">
                 در ساختاری هوشمند
               </span>
@@ -108,17 +115,22 @@ export default async function HomePage() {
           </div>
         </div>
 
+        {/* Hero Side Cards */}
         <div className="flex flex-col gap-4">
+          {/* Popular Hero Card */}
           <div className="group border-border bg-surface hover:border-accent/50 relative flex flex-1 flex-col justify-between overflow-hidden rounded-[30px] border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
                 <div className="bg-danger/10 text-danger inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-black">
                   <FireIcon className="fill-danger h-4 w-4" />
+
                   <span className="text-[10px]">برگزیده کاربران</span>
                 </div>
+
                 <h3 className="text-foreground group-hover:text-accent line-clamp-1 text-sm font-black tracking-tight transition-colors">
                   {popularProducts?.[0]?.title || "محصول پرطرفدار روز"}
                 </h3>
+
                 <p className="text-muted text-[11px] font-bold">
                   محبوب‌ترین گجت هفته بر اساس بازخورد جامعه کاربری
                 </p>
@@ -128,7 +140,7 @@ export default async function HomePage() {
                 <div className="bg-surface-secondary dark:bg-surface relative size-24 shrink-0 overflow-hidden rounded-xl p-1">
                   <Image
                     src={popularProducts[0].imageLink}
-                    alt="Popular Product"
+                    alt={popularProducts[0].title || "Popular Product"}
                     unoptimized
                     fill
                     className="rounded-xl object-contain p-1 mix-blend-multiply dark:mix-blend-normal"
@@ -145,6 +157,7 @@ export default async function HomePage() {
                     ).toLocaleString("fa-IR") + " تومان"
                   : "مشاهده قیمت"}
               </span>
+
               <Link
                 href={`/products/${popularProducts?.[0]?.slug || ""}`}
                 className="text-accent inline-flex items-center gap-0.5 text-xs font-black"
@@ -155,16 +168,20 @@ export default async function HomePage() {
             </div>
           </div>
 
+          {/* Mobile Hero Card */}
           <div className="group border-border bg-surface hover:border-accent/50 relative flex flex-1 flex-col justify-between overflow-hidden rounded-[30px] border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
                 <div className="bg-accent/10 text-accent inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-black">
                   <MobileIcon className="text-accent h-4 w-4" />
+
                   <span className="text-[10px]">اکوسیستم ارتباطات</span>
                 </div>
+
                 <h3 className="text-foreground group-hover:text-accent line-clamp-1 text-sm font-black tracking-tight transition-colors">
                   {mobileProducts?.[0]?.title || "دنیای گوشی‌های هوشمند"}
                 </h3>
+
                 <p className="text-muted text-[11px] font-bold">
                   آخرین پرچمداران و ترندهای تکنولوژی موبایل همراه با رجیستری
                 </p>
@@ -175,7 +192,7 @@ export default async function HomePage() {
                   <Image
                     src={mobileProducts[0].imageLink}
                     unoptimized
-                    alt="Mobile Product"
+                    alt={mobileProducts[0].title || "Mobile Product"}
                     fill
                     className="rounded-xl object-contain p-1 mix-blend-multiply dark:mix-blend-normal"
                   />
@@ -191,6 +208,7 @@ export default async function HomePage() {
                     ).toLocaleString("fa-IR") + " تومان"
                   : "مشاهده قیمت"}
               </span>
+
               <Link
                 href={`/products/${mobileProducts?.[0]?.slug || ""}`}
                 className="text-accent inline-flex items-center gap-0.5 text-xs font-black"
@@ -203,11 +221,17 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* =========================================================
+          CATEGORIES
+      ========================================================= */}
+
       <section className="space-y-8">
         <div className="flex flex-col gap-1">
           <h2 className="text-foreground flex items-center gap-2 text-xl font-black">
-            <Grid className="text-foreground h-5 w-5" /> دسته‌بندی‌های برگزیده
+            <Grid className="text-foreground h-5 w-5" />
+            دسته‌بندی‌های برگزیده
           </h2>
+
           <p className="text-muted text-xs font-bold">
             گروه‌بندی هوشمند محصولات جهت دسترسی سریع
           </p>
@@ -241,83 +265,140 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* =========================================================
+          LATEST PRODUCTS
+      ========================================================= */}
+
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-1">
             <h2 className="text-foreground flex items-center gap-2 text-xl font-black">
               <Sparkles className="text-accent h-5 w-5" />
+
               <span>جدیدترین ورودی‌ها</span>
             </h2>
+
             <p className="text-muted text-xs font-bold">
               آخرین تکنولوژی‌های موجود شده در انبار فروشگاه
             </p>
           </div>
+
           <Link
             href="/products?sort=latest"
             className="border-border bg-surface text-foreground hover:bg-surface-secondary flex items-center gap-1 rounded-xl border px-4 py-2 text-xs font-bold transition-colors"
           >
-            مشاهده همه <ChevronLeft className="h-4 w-4" />
+            مشاهده همه
+            <ChevronLeft className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-          {latestProducts?.slice(0, 3).map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
+        {/* Mobile Horizontal Carousel / Desktop Grid */}
+        <div className="relative -mx-4 overflow-hidden px-4 md:mx-0 md:px-0">
+          <div className="flex snap-x snap-mandatory [scrollbar-width:none] gap-3 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
+            {latestProducts?.slice(0, 3).map((product) => (
+              <div
+                key={product._id}
+                className="w-[85vw] min-w-[85vw] shrink-0 snap-start sm:w-[78vw] sm:min-w-[78vw] md:w-auto md:min-w-0"
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="border-border from-danger/10 to-surface/40 relative overflow-hidden rounded-[36px] border bg-linear-to-b p-6 shadow-inner backdrop-blur-sm md:p-10">
-        <div className="bg-danger/5 absolute top-0 right-0 h-72 w-72 rounded-full blur-3xl" />
-        <div className="bg-warning/5 absolute bottom-0 left-0 h-72 w-72 rounded-full blur-3xl" />
+      {/* =========================================================
+          POPULAR PRODUCTS
+      ========================================================= */}
 
-        <div className="relative mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-foreground flex items-center gap-2 text-xl font-black">
-              <Flame className="fill-danger text-danger h-5 w-5" />
-              محصولات پرطرفدار
+      <section className="border-border from-danger/10 to-surface/40 relative overflow-hidden rounded-[28px] border bg-linear-to-b p-4 shadow-inner backdrop-blur-sm sm:rounded-[32px] sm:p-5 md:rounded-[36px] md:p-10">
+        {/* Decorative Background */}
+        <div className="bg-danger/5 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl md:h-72 md:w-72" />
+
+        <div className="bg-warning/5 pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full blur-3xl md:h-72 md:w-72" />
+
+        {/* Header */}
+        <div className="relative mb-5 flex flex-col gap-3 sm:mb-6 md:mb-8 md:flex-row md:items-center md:justify-between md:gap-4">
+          <div className="flex min-w-0 flex-col gap-1">
+            <h2 className="text-foreground flex items-center gap-2 text-lg font-black md:text-xl">
+              <Flame className="fill-danger text-danger h-5 w-5 shrink-0" />
+
+              <span>محصولات پرطرفدار</span>
             </h2>
-            <p className="text-muted text-xs font-bold">
+
+            <p className="text-muted text-[10px] leading-5 font-bold sm:text-xs">
               محبوب‌ترین گجت‌ها بر اساس لایک و بازخورد کاربران شما
             </p>
           </div>
+
           <Link
             href="/products?sort=popular"
-            className="text-danger text-xs font-black"
+            className="text-danger inline-flex w-fit items-center gap-1 text-[10px] font-black transition-opacity hover:opacity-70 sm:text-xs"
           >
             لیست کامل برترین‌ها
+            <ChevronLeft className="h-3.5 w-3.5" />
           </Link>
         </div>
 
-        <div className="relative grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-          {popularProducts?.slice(0, 3).map((product) => (
-            <ProductCard key={product._id} product={product} isPopular />
-          ))}
+        {/* Products */}
+        <div className="relative -mx-4 overflow-hidden sm:-mx-5 md:mx-0">
+          <div className="flex snap-x snap-mandatory [scrollbar-width:none] gap-3 overflow-x-auto overscroll-x-contain px-4 pb-3 [-webkit-overflow-scrolling:touch] sm:gap-4 sm:px-5 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
+            {popularProducts?.slice(0, 3).map((product) => (
+              <div className="w-[82vw] min-w-[82vw] shrink-0 snap-start sm:w-[72vw] sm:min-w-[72vw] md:w-auto md:min-w-0">
+                <ProductCard product={product} isPopular />
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Mobile Scroll Hint */}
+        {popularProducts?.length > 1 && (
+          <div className="text-muted mt-2 flex items-center justify-center gap-1 text-[9px] font-bold md:hidden">
+            <span>برای دیدن محصولات بیشتر بکشید</span>
+
+            <ChevronLeft className="h-3 w-3 animate-pulse" />
+          </div>
+        )}
       </section>
+
+      {/* =========================================================
+          MOBILE PRODUCTS
+      ========================================================= */}
 
       <section className="space-y-6">
         <div className="flex flex-col gap-1">
           <h2 className="text-foreground flex items-center gap-2 text-xl font-black">
-            <Smartphone className="text-foreground h-5 w-5" /> دنیای گوشی‌های
-            هوشمند
+            <Smartphone className="text-foreground h-5 w-5" />
+            دنیای گوشی‌های هوشمند
           </h2>
+
           <p className="text-muted text-xs font-bold">
             پرچمداران و میان‌رده‌های دنیای موبایل
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-4 lg:col-span-2">
-            {mobileProducts?.slice(0, 2).map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+          {/* Mobile Products */}
+          <div className="relative -mx-4 overflow-hidden px-4 lg:col-span-2 lg:mx-0 lg:overflow-visible lg:px-0">
+            <div className="flex snap-x snap-mandatory [scrollbar-width:none] gap-3 overflow-x-auto pb-4 lg:grid lg:grid-cols-2 lg:gap-4 [&::-webkit-scrollbar]:hidden">
+              {mobileProducts?.slice(0, 2).map((product) => (
+                <div
+                  key={product._id}
+                  className="w-[85vw] min-w-[85vw] shrink-0 snap-start sm:w-[78vw] sm:min-w-[78vw] lg:w-auto lg:min-w-0"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
           </div>
 
+          {/* Mobile Feature Card */}
           <div className="group bg-foreground text-background shadow-accent/20 relative flex min-h-85 flex-col justify-between overflow-hidden rounded-[36px] p-8 shadow-xl transition-all duration-500 hover:-translate-y-1">
             <div className="pointer-events-none absolute inset-0 z-0">
               <div className="bg-accent/20 absolute -top-12 -right-12 h-40 w-40 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-125" />
+
               <div className="bg-success/10 absolute -bottom-12 -left-12 h-36 w-36 rounded-full blur-3xl" />
+
               <div className="absolute inset-0 bg-[radial-gradient(#ffffff02_1px,transparent_1px)] bg-size-[16px_16px]" />
             </div>
 
