@@ -289,6 +289,7 @@ export default async function HomePage() {
         <div className="bg-danger/5 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl md:h-80 md:w-80" />
         <div className="bg-warning/5 pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full blur-3xl md:h-80 md:w-80" />
 
+
         <div className="relative mb-6 flex flex-col gap-4 md:mb-8 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-1.5">
             <h2 className="text-foreground flex items-center gap-2 text-xl font-black md:text-2xl">
