@@ -5,7 +5,7 @@ import { Button, Spinner, toast } from "@heroui/react";
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-function LikeButton({ product, className }) {
+export default function LikeButton({ product, className }) {
   const queryClient = useQueryClient();
   const { mutateAsync, isLoading } = useLikeProduct();
   const { data } = useGetUser();
@@ -20,19 +20,20 @@ function LikeButton({ product, className }) {
       toast.danger(error?.response?.data?.message);
     }
   };
+
   return (
     <Button
-      size="lg"
+      size="sm"
       onClick={() => handleLike()}
-      variant="danger-soft"
+      variant="light" // تغییر به light تا استایل‌های Tailwind به درستی اعمال شوند
       isIconOnly
-      className={`bg-danger/10 text-danger hover:bg-danger-soft hover:text-danger flex items-center justify-center rounded-2xl p-3 backdrop-blur-md transition-all active:scale-90`}
+      className={`min-w-0 !p-0 ${className} flex items-center justify-center active:scale-90`}
     >
       {isLoading ? (
-        <Spinner color="danger" />
-      ) : user?.likedProducts.some((p) => p === product._id) ? (
+        <Spinner size="sm" color="danger" />
+      ) : user?.likedProducts?.some((p) => p === product._id) ? (
         <svg
-          className={`${className ? "h-6 w-6" : "h-5 w-5"}`}
+          className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +47,7 @@ function LikeButton({ product, className }) {
         </svg>
       ) : (
         <svg
-          className={`${className ? "h-6 w-6" : "h-5 w-5"}`}
+          className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5"
           viewBox="0 0 24 24"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
@@ -66,5 +67,3 @@ function LikeButton({ product, className }) {
     </Button>
   );
 }
-
-export default LikeButton;
