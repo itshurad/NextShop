@@ -118,7 +118,7 @@ export default function CouponForm({ id }) {
 
   return (
     <Form onSubmit={onSubmit}>
-      <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-1 py-6 md:px-6 lg:px-8">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-black">

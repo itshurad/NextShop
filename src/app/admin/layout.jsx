@@ -12,7 +12,7 @@ export default function AdminLayout({ children }) {
 
       <div className="flex flex-1 flex-col">
         <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
-        <main className="p-1 lg:p-8">{children}</main>
+        <main className="p-4 lg:p-8">{children}</main>
       </div>
     </div>
   );
