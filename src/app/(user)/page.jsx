@@ -220,7 +220,7 @@ export default async function HomePage() {
         </div>
 
         {/* استفاده از گرید منعطف برای دسته‌بندی‌ها */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 md:gap-5 lg:grid-cols-6">
+        <div className="flex flex-wrap justify-center gap-3 md:gap-5">
           {categories?.map((cat) => {
             const IconComponent =
               categoryIcons[cat.englishTitle?.toLowerCase()] || Layers;
@@ -229,15 +229,18 @@ export default async function HomePage() {
               <Link
                 href={`/products?category=${cat.englishTitle}`}
                 key={cat._id}
-                className="group border-border bg-surface hover:border-accent/40 hover:shadow-accent/5 relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl md:rounded-[28px] md:p-6"
+                className="group border-border bg-surface hover:border-accent/40 hover:shadow-accent/5 relative flex w-[calc(50%-6px)] flex-col items-center justify-center overflow-hidden rounded-2xl border p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:w-[calc(33.333%-8px)] md:w-[calc(25%-15px)] md:rounded-[28px] md:p-6 lg:w-[calc(16.666%-17px)]"
               >
                 <div className="bg-accent/0 group-hover:bg-accent/20 absolute -top-10 -right-10 h-24 w-24 rounded-full blur-2xl transition-all duration-500" />
+
                 <div className="bg-surface-secondary group-hover:border-accent/20 group-hover:bg-accent/10 text-foreground/80 group-hover:text-accent mb-3 flex h-12 w-12 items-center justify-center rounded-[14px] border border-transparent shadow-xs transition-all duration-500 group-hover:rotate-6 md:mb-4 md:h-14 md:w-14 md:rounded-2xl">
                   <IconComponent className="h-5 w-5 transition-transform duration-300 group-hover:scale-110 md:h-6 md:w-6" />
                 </div>
+
                 <span className="text-foreground group-hover:text-accent block text-xs font-black tracking-tight transition-colors md:text-sm">
                   {cat.title}
                 </span>
+
                 <span className="bg-accent absolute bottom-0 h-1 w-0 rounded-full transition-all duration-300 group-hover:w-10" />
               </Link>
             );
@@ -285,10 +288,9 @@ export default async function HomePage() {
       {/* =========================================================
           POPULAR PRODUCTS
       ========================================================= */}
-      <section className="border-border from-danger/10 to-surface/40 relative overflow-hidden rounded-[28px] border bg-linear-to-b p-5 shadow-inner backdrop-blur-sm md:rounded-[40px] md:p-10">
+      <section className="border-border from-danger/10 to-surface/40 relative mb-10 overflow-hidden rounded-[28px] border bg-linear-to-b p-5 shadow-inner backdrop-blur-sm md:rounded-[40px] md:p-10">
         <div className="bg-danger/5 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl md:h-80 md:w-80" />
         <div className="bg-warning/5 pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full blur-3xl md:h-80 md:w-80" />
-
 
         <div className="relative mb-6 flex flex-col gap-4 md:mb-8 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-1.5">
